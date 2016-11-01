@@ -111,6 +111,7 @@ namespace NetIOCP.AsyncSocketCore
         {
             m_activeDT = DateTime.UtcNow;
             m_asyncSocketUserToken.SendAsyncState = false;
+            Console.WriteLine("public virtual bool SendCompleted(): m_asyncSocketUserToken.SendAsyncState = false;");
             AsyncSendBufferManager asyncSendBufferManager = m_asyncSocketUserToken.SendBuffer;
             asyncSendBufferManager.ClearFirstPacket(); //清除已发送的包
             int offset = 0;
@@ -119,6 +120,7 @@ namespace NetIOCP.AsyncSocketCore
             {
                 // m_sendAsync = true;
                 m_asyncSocketUserToken.SendAsyncState = true;
+                Console.WriteLine("public virtual bool SendCompleted():m_asyncSocketUserToken.SendAsyncState = true;");
                 return m_asyncSocketServer.SendAsyncEvent(m_asyncSocketUserToken.ConnectSocket, m_asyncSocketUserToken.SendEventArgs,
                     asyncSendBufferManager.DynamicBufferManager.Buffer, offset, count);
             }

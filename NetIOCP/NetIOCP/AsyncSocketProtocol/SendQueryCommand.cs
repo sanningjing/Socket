@@ -9,21 +9,19 @@ using NetIOCP.AsyncSocketProtoclCore;
 
 namespace NetIOCP.AsyncSocketProtocol
 {
-    class SendQueryCommand: BaseSocketProtocol
+    class SendQueryCommand : BaseSocketProtocol
     {
         public SendQueryCommand(AsyncSocketServer asyncSocketServer, AsyncSocketUserToken asyncSocketUserToken)
             : base(asyncSocketServer, asyncSocketUserToken)
         {
             m_asyncSocketServer = asyncSocketServer;
-         //   MoinitorTimerStart();
+            MoinitorTimerStart();
 
         }
         private System.Timers.Timer m_MonitorTimer = null;
-        private const int m_MonitorTimerInterval = 1*1000;
+        private const int m_MonitorTimerInterval = 60 * 1000;//1分钟发送一次
 
         private AsyncSocketServer m_asyncSocketServer;
-
-       
 
         /// <summary>
         /// 监控定时初始化
@@ -48,57 +46,54 @@ namespace NetIOCP.AsyncSocketProtocol
                 try
                 {
                     //SOCKET不为空，则可以发送消息
-                    if (ListSoc[i].ConnectSocket!=null)
+                    if (ListSoc[i].ConnectSocket != null)
                     {
                         //   Console.WriteLine("{0} is time out!!!", ListSoc[i].ConnectSocket.ToString());
                         //   //todo 服务器主动断掉这个链接，其他操作待添加
                         if (ListSoc[i].AsyncSocketInvokeElement != null)
                         {
                             ///当前端口发送不冲突
-                          
-                                //  byte[] bufferUTF8 = str2HexByte("010203040506070809000102030405060708090001020304050607080900");
-                                byte[] bufferUTF8 = str2HexByte(ListSoc[i].StrQueryCommand);
 
-                                AsyncSendBufferManager asyncSendBufferManager = ListSoc[i].SendBuffer;
-                                asyncSendBufferManager.StartPacket();
-                                // asyncSendBufferManager.DynamicBufferManager.WriteInt(totalLength, false); //写入总大小
-                                asyncSendBufferManager.DynamicBufferManager.WriteBuffer(bufferUTF8, 0, bufferUTF8.Length);
+                            byte[] bufferUTF8 = str2HexByte(ListSoc[i].StrQueryCommand);
 
-                                asyncSendBufferManager.EndPacket();
-                                // 
-                                bool result = true;
-                                if (!ListSoc[i].SendAsyncState)
-                                {
-                                    int packetOffset = 0;
-                                    int packetCount = 0;
-                                    if (asyncSendBufferManager.GetFirstPacket(ref packetOffset, ref packetCount))
-                                    {
-                                        ListSoc[i].SendAsyncState = true;
-                                        result = m_asyncSocketServer.SendAsyncEvent(ListSoc[i].ConnectSocket,
-                                            ListSoc[i].SendEventArgs,
-                                            asyncSendBufferManager.DynamicBufferManager.Buffer, packetOffset,
-                                            packetCount);
-                                    }
-                                }
-                           
-                            else
+                            AsyncSendBufferManager asyncSendBufferManager = ListSoc[i].SendBuffer;
+                            asyncSendBufferManager.StartPacket();
+                            // asyncSendBufferManager.DynamicBufferManager.WriteInt(totalLength, false); //写入总大小
+                            asyncSendBufferManager.DynamicBufferManager.WriteBuffer(bufferUTF8, 0, bufferUTF8.Length);
+
+                            asyncSendBufferManager.EndPacket();
+                            // 
+                            bool result = true;
+                            Console.WriteLine("ListSoc[i].SendAsyncState = ?" + ListSoc[i].SendAsyncState);
+                            //如果发送端口被占有
+                            while (ListSoc[i].SendAsyncState)
                             {
-                               // Sleep(100);
+                                Thread.Sleep(100);
+                                Console.WriteLine("sleep 100");
                             }
-
-
-                            // ListSoc[i].SendEventArgs.SetBuffer(bufferUTF8, 0, bufferUTF8.Length);
-                          //  ListSoc[i].ConnectSocket.SendAsync(ListSoc[i].SendEventArgs);
+                           
+                            int packetOffset = 0;
+                            int packetCount = 0;
+                            if (asyncSendBufferManager.GetFirstPacket(ref packetOffset, ref packetCount))
+                            {
+                                ListSoc[i].SendAsyncState = true;
+                                Console.WriteLine(System.DateTime.Now + "ListSoc[i].SendAsyncState = true;");
+                                result = m_asyncSocketServer.SendAsyncEvent(ListSoc[i].ConnectSocket,
+                                    ListSoc[i].SendEventArgs,
+                                    asyncSendBufferManager.DynamicBufferManager.Buffer, packetOffset,
+                                    packetCount);
+                            }
+                      
                         }
 
-                        
+
 
                     }
                     Thread.Sleep(100);
                 }
                 catch (Exception ex)
                 {
-                    Console.WriteLine("##############"+ex);
+                    Console.WriteLine("##############" + ex);
                 }
 
             }

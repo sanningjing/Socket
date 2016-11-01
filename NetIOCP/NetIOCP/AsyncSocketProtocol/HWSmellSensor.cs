@@ -70,7 +70,7 @@ namespace NetIOCP.AsyncSocketProtocol
                    
                     if (0xA8 == receiveBuffer.Buffer[i] && 0x81 == receiveBuffer.Buffer[i+1])
                     {
-                        Console.WriteLine("receive A881");
+                       // Console.WriteLine("receive A881");
                         //checksum
                         byte[] forCheck = new byte[19];
                         Array.Copy(receiveBuffer.Buffer, preCount, forCheck, 0, 19);
@@ -154,10 +154,12 @@ namespace NetIOCP.AsyncSocketProtocol
             {
                 //心跳包处理
                 rReturn=HeartBeatAnalyse(buffer);
+                Console.WriteLine("心跳包输出.");
             }
             else if (count==42)
             {
                 rReturn = DataPackageAnalyse(buffer);
+                Console.WriteLine("数据包");
             }
             else
             {

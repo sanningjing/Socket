@@ -185,7 +185,8 @@ namespace NetIOCP.AsyncSocketProtocol
 
         public override bool DataPackageAnalyse(byte[] byteArray)
         {
-            return base.DataPackageAnalyse(byteArray);
+          //  return base.DataPackageAnalyse(byteArray);
+            return true;
         }
 
         public override bool DoSendResultSmell()

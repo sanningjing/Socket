@@ -37,12 +37,22 @@ namespace NetIOCP.AsyncSocketCore
             if (count >= DataCount) //如果需要清理的数据大于现有数据大小，则全部清理
             {
                 DataCount = 0;
+                //清空
+                for (int j=0;j<DataCount;j++)
+                {
+                    Buffer[j] = 0;
+                }
             }
             else
             {
                 for (int i = 0; i < DataCount - count; i++) //否则后面的数据往前移
                 {
                     Buffer[i] = Buffer[count + i];
+                }
+                //将之前的缓冲获清空
+                for (int i = DataCount - count; i < DataCount; i++)
+                {
+                    Buffer[i] = 0;
                 }
                 DataCount = DataCount - count;
             }

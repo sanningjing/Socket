@@ -15,7 +15,7 @@ namespace NetIOCP.AsyncSocketProtocol
             : base(asyncSocketServer, asyncSocketUserToken)
         {
             m_asyncSocketServer = asyncSocketServer;
-            MoinitorTimerStart();
+         //   MoinitorTimerStart();
 
         }
         private System.Timers.Timer m_MonitorTimer = null;

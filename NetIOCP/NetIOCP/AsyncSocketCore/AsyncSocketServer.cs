@@ -113,6 +113,7 @@ namespace NetIOCP.AsyncSocketCore
             listenSocket.Listen(m_numConnections);
         //    Program.Logger.InfoFormat("Start listen socket {0} success", localEndPoint.ToString());
             Console.WriteLine("Start listen socket {0} success", localEndPoint.ToString());
+            //todo:性能待测试
             for (int i = 0; i < 6; i++) //不能循环投递多次AcceptAsync，会造成只接收8000连接后不接收连接了
             StartAccept(null);
             m_daemonThread = new DaemonThread(this);
@@ -122,7 +123,6 @@ namespace NetIOCP.AsyncSocketCore
 
         public void StartAccept(SocketAsyncEventArgs acceptEventArgs)
         {
-            Console.WriteLine("begin StartAccept ");
             if (acceptEventArgs == null)
             {
                 acceptEventArgs = new SocketAsyncEventArgs();
@@ -135,7 +135,7 @@ namespace NetIOCP.AsyncSocketCore
 
             m_maxNumberAcceptedClients.WaitOne(); //获取信号量
             bool willRaiseEvent = listenSocket.AcceptAsync(acceptEventArgs);
-            Console.WriteLine(System.DateTime.Now + "  listenSocket.AcceptAsync");
+         //   Console.WriteLine(System.DateTime.Now + "  listenSocket.AcceptAsync");
             if (!willRaiseEvent)
             {
                 ProcessAccept(acceptEventArgs);

@@ -14,3 +14,11 @@ E:\LYJ\WORK\_Projects\06绿化\简单小程序\NetIOCP\NetIOCP\bin\Debug\log4net
 E:\LYJ\WORK\_Projects\06绿化\简单小程序\NetIOCP\NetIOCP\obj\Debug\NetIOCP.exe
 E:\LYJ\WORK\_Projects\06绿化\简单小程序\NetIOCP\NetIOCP\obj\Debug\NetIOCP.pdb
 E:\LYJ\WORK\_Projects\06绿化\简单小程序\NetIOCP\NetIOCP\obj\Debug\NetIOCP.csprojResolveAssemblyReference.cache
+E:\LyjGit\testGit\NetIOCP\NetIOCP\bin\Debug\NetIOCP.exe.config
+E:\LyjGit\testGit\NetIOCP\NetIOCP\obj\Debug\NetIOCP.exe
+E:\LyjGit\testGit\NetIOCP\NetIOCP\obj\Debug\NetIOCP.pdb
+E:\LyjGit\testGit\NetIOCP\NetIOCP\bin\Debug\NetIOCP.exe
+E:\LyjGit\testGit\NetIOCP\NetIOCP\bin\Debug\NetIOCP.pdb
+E:\LyjGit\testGit\NetIOCP\NetIOCP\bin\Debug\log4net.dll
+E:\LyjGit\testGit\NetIOCP\NetIOCP\bin\Debug\log4net.xml
+E:\LyjGit\testGit\NetIOCP\NetIOCP\obj\Debug\NetIOCP.csprojResolveAssemblyReference.cache

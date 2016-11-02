@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using NetIOCP.AsyncSocketCore;
 using NetIOCP.AsyncSocketProtoclCore;
+using log4net;
+using log4net.Repository.Hierarchy;
 
 namespace NetIOCP.AsyncSocketProtocol
 {
@@ -16,6 +18,8 @@ namespace NetIOCP.AsyncSocketProtocol
             m_socketFlag = "Smell";
         }
 
+       
+       
         public override void Close()
         {
             base.Close();
@@ -188,6 +192,25 @@ namespace NetIOCP.AsyncSocketProtocol
         public override bool DataPackageAnalyse(byte[] byteArray)
         {
           //  return base.DataPackageAnalyse(byteArray);
+            if (byteArray.Length<=0)
+            {
+                return false;
+            }
+            int dataLength = byteArray.Length;
+
+            if ((0x10 == byteArray[dataLength - 1]) && (0x03 == byteArray[dataLength - 2]))
+            {
+            }
+            else
+            {
+                string messageOut = "数据帧尾出错：" + byteArray[dataLength-2].ToString()+byteArray[dataLength-1].ToString();
+                Program.Logger.Error(messageOut);
+
+                return false;
+            }
+
+
+
             return true;
         }
 

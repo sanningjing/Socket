@@ -86,8 +86,6 @@ namespace NetIOCP.AsyncSocketProtocol
                       
                         }
 
-
-
                     }
                     Thread.Sleep(100);
                 }

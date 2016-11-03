@@ -256,7 +256,7 @@ namespace NetIOCP.AsyncSocketCore
         /// </summary>
         /// <param name="byteArray"></param>
         /// <returns></returns>
-        public virtual bool DataPackageAnalyse(byte[] byteArray)
+        public virtual bool DataPackageAnalyse(byte[] byteArray,int count)
         {
             bool bReturn = false;
             return bReturn;

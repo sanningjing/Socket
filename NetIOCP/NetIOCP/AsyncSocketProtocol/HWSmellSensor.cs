@@ -153,6 +153,7 @@ namespace NetIOCP.AsyncSocketProtocol
                 return false;
 
             bool rReturn = false;
+           
 
             if (count==20)
             {
@@ -162,7 +163,7 @@ namespace NetIOCP.AsyncSocketProtocol
             }
             else if (count==42)
             {
-                rReturn = DataPackageAnalyse(buffer);
+                rReturn = DataPackageAnalyse(buffer,count);
                 Console.WriteLine("数据包");
             }
             else
@@ -189,25 +190,41 @@ namespace NetIOCP.AsyncSocketProtocol
            // return base.HeartBeatAnalyse(byteArray);
         }
 
-        public override bool DataPackageAnalyse(byte[] byteArray)
+        public override bool DataPackageAnalyse(byte[] byteArray,int count)
         {
           //  return base.DataPackageAnalyse(byteArray);
-            if (byteArray.Length<=0)
+            if (count<=0)
             {
                 return false;
             }
-            int dataLength = byteArray.Length;
+            int dataLength = count;
 
-            if ((0x10 == byteArray[dataLength - 1]) && (0x03 == byteArray[dataLength - 2]))
+            if ((0x10 == byteArray[count - 2]) && (0x03 == byteArray[count - 1]))
             {
                 //数据结尾正确
                 //取传感器数据
-                byte[] bValue = null;
-                byte[] bPoint = null;
-                byte[] bUnit = null;
+                byte[] bValue = new byte[5];//气体值
+                byte[] bPoint = new byte[1];//小数点位置
+                byte[] bUnit = new byte[3];//单位
                 Array.Copy(byteArray,30,bValue,0,5);
                 Array.Copy(byteArray,35,bPoint,0,1);
-                Array.Copy();
+                Array.Copy(byteArray,36,bUnit,0,3);
+                
+                for (int i=0;i< bValue.Length;i++)
+                {
+                    if ((bValue[i] < 0x30) || (bValue[i] > 0x39))
+                    {
+                        return false;
+                    }
+                }
+
+                string strValue = System.Text.Encoding.ASCII.GetString(bValue);
+                double dValue = GetRealValue(Convert.ToDouble(strValue),byte2HexStr(bPoint,1));
+                string strUnit = GetStrUnit(byte2HexStr(bUnit,3));
+
+                //输出结果
+                string strResult= System.DateTime.Now.ToString() + "气体浓度为：" + dValue.ToString() + strUnit+ System.Environment.NewLine;
+                Console.WriteLine(strResult);
             }
             else
             {
@@ -215,10 +232,63 @@ namespace NetIOCP.AsyncSocketProtocol
                 Program.Logger.Error(messageOut);
                 return false;
             }
-
-
-
             return true;
+        }
+
+        /// <summary>
+        /// 根据代码，查找单位。
+        /// </summary>
+        /// <param name="iUnit"></param>
+        /// <returns></returns>
+        public string GetStrUnit(string iUnit)
+        {
+            string strUnit = "";
+            switch (iUnit)
+            {
+                case "50504D":
+                    strUnit = "PPM";
+                    break;
+                case "564F4C":
+                    strUnit = "Vol%";
+                    break;
+                case "4C454C":
+                    strUnit = "LEL%";
+                    break;
+                default:
+                    strUnit = "unit error";
+                    break;
+            }
+            return strUnit;
+
+        }
+
+        /// <summary>
+/// 根据小数点，获取实时值
+/// </summary>
+/// <param name="dValue"></param>
+/// <param name="bPoint"></param>
+/// <returns></returns>
+        public double GetRealValue(double dValue,string bPoint)
+        {
+            switch (bPoint)
+            {
+                case "30":
+                    dValue = dValue * 1.0;
+                    break;
+                case "31":
+                    dValue = dValue * 0.1;
+                    break;
+                case "32":
+                    dValue = dValue * 0.01;
+                    break;
+                case "33":
+                    dValue = dValue * 0.001;
+                    break;
+                default:
+                    Console.WriteLine("小数点出错，保持原有数据");
+                    break;
+            }
+            return dValue;
         }
 
         public override bool DoSendResultSmell()
@@ -327,9 +397,7 @@ namespace NetIOCP.AsyncSocketProtocol
                 }
                 catch (Exception E)
                 {
-                    //                     Program.Logger.ErrorFormat("Get client error, message: {0}", E.Message);
-                    //                     Program.Logger.Error(E.StackTrace);
-
+                    
                     Console.WriteLine("Get client error, message: {0}", E.Message);
                 }
             }

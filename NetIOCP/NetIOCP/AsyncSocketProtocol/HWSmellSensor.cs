@@ -200,12 +200,19 @@ namespace NetIOCP.AsyncSocketProtocol
 
             if ((0x10 == byteArray[dataLength - 1]) && (0x03 == byteArray[dataLength - 2]))
             {
+                //数据结尾正确
+                //取传感器数据
+                byte[] bValue = null;
+                byte[] bPoint = null;
+                byte[] bUnit = null;
+                Array.Copy(byteArray,30,bValue,0,5);
+                Array.Copy(byteArray,35,bPoint,0,1);
+                Array.Copy();
             }
             else
             {
                 string messageOut = "数据帧尾出错：" + byteArray[dataLength-2].ToString()+byteArray[dataLength-1].ToString();
                 Program.Logger.Error(messageOut);
-
                 return false;
             }
 

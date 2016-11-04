@@ -60,62 +60,21 @@ namespace NetIOCP.AsyncSocketProtocol
                     Array.Copy(receiveBuffer.Buffer,0,forCheck,0,36);
                     bCheckResult = CheckSumCRC(forCheck);
                     //校验OK
-                    if ((bCheckResult[0] == receiveBuffer.Buffer[36]) && (bCheckResult[1] == receiveBuffer.Buffer[37]))
+                    if ((bCheckResult[0] == receiveBuffer.Buffer[37]) && (bCheckResult[1] == receiveBuffer.Buffer[36]))
                     {
                         bool paseResult = ProcessPacket(receiveBuffer.Buffer, 0, packetLength);
                     }
                     else
                     {
-                        
+                        Program.Logger.Debug("数据帧尾有问题，抛弃一帧");
+                        Console.WriteLine(System.DateTime.Now+"数据帧尾有问题，抛弃一帧");
                     }
 
 
                 }
 
-
-
-
-                for (int i = 0; i < receiveBuffer.DataCount; i++)
-                {
-
-                    if (0xA8 == receiveBuffer.Buffer[i] && 0x81 == receiveBuffer.Buffer[i + 1])
-                    {
-                        // Console.WriteLine("receive A881");
-                        //checksum
-                        byte[] forCheck = new byte[19];
-                        Array.Copy(receiveBuffer.Buffer, preCount, forCheck, 0, 19);
-                        byte checkSumResult = CheckSum(forCheck);
-                     
-                        
-
-                    }
-                    preCount++;
-                }
-
-                ///just for test;
-
-                if (packetLength == 0)
-                {
-                    Console.WriteLine("packetLength==0");
-                    receiveBuffer.Clear(receiveBuffer.DataCount);//清空缓存
-                    return false;//没有正确的数据幀头
-                }
-
-                
-
-
-                if (receiveBuffer.DataCount >= packetLength + preCount) //收到的数据达到最小包长度
-                {
-                    result = ProcessPacket(receiveBuffer.Buffer, preCount, packetLength);//已经校验过的包
-                    if (result)
-                        receiveBuffer.Clear(packetLength + preCount); //从缓存中清理已经处理的数据长度
-                    else
-                        return result;
-                }
-                else
-                {
-                    return true;
-                }
+                //一帧数据全部清除
+                receiveBuffer.Clear(packetLength);
             }
             return true;
        }
@@ -125,7 +84,7 @@ namespace NetIOCP.AsyncSocketProtocol
             bool pResult = false;
             byte bId = buffer[0];//设备ID
             byte bFunCode = buffer[1];//功能码
-            byte bDataLen = buffer[2];//从第4字节到数据结束的总字节数
+            int  bDataLen =(buffer[2]<<8)|buffer[3] ;//从第4字节到数据结束的总字节数
 
             if (32!=bDataLen)
             {
@@ -134,9 +93,20 @@ namespace NetIOCP.AsyncSocketProtocol
                 return false;
             }
 
-            double lData1 = 0;
-            Convert.ToDouble();
+            //字节高低位。高前低后
+            double lData1 =((buffer[4]<<8)|buffer[5])*0.1;//CO2:数据库无此字段
+            double lData2= ((buffer[6]<<8)|buffer[7])*0.1;//AIR_TEMPERATURE
+            double lData3 = ((buffer[8] << 8) | buffer[9]) * 0.1;//AIR_MOISTURE
+            double lData4 = ((buffer[10] << 8) | buffer[11]) * 10;//SUNSHINE
+            double lData5 = ((buffer[12] << 8) | buffer[13]) * 0.01;//SOIL_PH
+            double lData6 = ((buffer[14] << 8) | buffer[15]) * 0.1;//SOIL_TEMPERATURE
+            double lData7 = ((buffer[16] << 8) | buffer[17]) * 0.1;//SOIL_MOISTURE//20cm
+            double lData8 = ((buffer[18] << 8) | buffer[19]) * 0.1;//SOIL_MOISTURE30
 
+            string strOut = "CO2:" + lData1 + " 环境温度：" + lData2 + " 环境湿度：" + lData3 + " 光照：" + lData4 + " 土壤PH：" + lData5 + " 土壤温度：" + lData6 + " 土壤湿度：" + lData7 + " 土壤湿度30：" + lData8;
+            Console.WriteLine(strOut);
+
+            //Convert.ToDouble();
 
             return pResult;
         }

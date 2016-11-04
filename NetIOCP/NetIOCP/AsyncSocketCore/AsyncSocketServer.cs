@@ -255,7 +255,7 @@ namespace NetIOCP.AsyncSocketCore
             AsyncSocketUserToken userToken = sendEventArgs.UserToken as AsyncSocketUserToken;
             if (userToken.AsyncSocketInvokeElement == null)
                 return false;
-            userToken.ActiveDateTime = DateTime.Now;
+        //    userToken.ActiveDateTime = DateTime.Now;
             if (sendEventArgs.SocketError == SocketError.Success)
                 return userToken.AsyncSocketInvokeElement.SendCompleted(); //调用子类回调函数
             else

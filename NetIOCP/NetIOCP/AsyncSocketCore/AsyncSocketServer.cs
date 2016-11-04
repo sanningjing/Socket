@@ -53,8 +53,6 @@ namespace NetIOCP.AsyncSocketCore
             m_asyncSocketUserTokenList = new AsyncSocketUserTokenList();//客户SOCKET列表
             m_maxNumberAcceptedClients = new Semaphore(numConnections, numConnections);
 
-
-         
         }
 
         /// <summary>
@@ -301,8 +299,10 @@ namespace NetIOCP.AsyncSocketCore
          {
           //todo：可以根据端口绑定相应的处理协议，待添加
           //气体传感器协议
-            userToken.AsyncSocketInvokeElement = new HWSmellSensor(this,userToken);
-          //  userToken.AsyncSocketInvokeElement = new LogOutputSocketProtocol(this, userToken);//日志输出
+          //  userToken.AsyncSocketInvokeElement = new HWSmellSensor(this,userToken);
+            //土壤传感器协议
+            userToken.AsyncSocketInvokeElement = new LHSoilSensor(this,userToken);
+          
             if (userToken.AsyncSocketInvokeElement != null)
             {
                 Program.Logger.InfoFormat("Building socket invoke element {0}.Local Address: {1}, Remote Address: {2}",

@@ -61,7 +61,7 @@
     <Compile Include="AsyncSocketProtoclCore\BaseSocketProtocol.cs" />
     <Compile Include="AsyncSocketProtoclCore\ProtocolKey.cs" />
     <Compile Include="AsyncSocketProtocol\HWSmellSensor.cs" />
-    <Compile Include="AsyncSocketProtocol\LHSoilSocketProtocol.cs" />
+    <Compile Include="AsyncSocketProtocol\LHSoilSensor.cs" />
     <Compile Include="AsyncSocketProtocol\SendQueryCommand.cs" />
     <Compile Include="AsyncSocketPublic\BasicFunc.cs" />
     <Compile Include="Program.cs" />

@@ -10,6 +10,9 @@ using log4net.Repository.Hierarchy;
 
 namespace NetIOCP.AsyncSocketProtocol
 {
+    /// <summary>
+    /// 环卫气体传感器
+    /// </summary>
     public class HWSmellSensor: BaseSocketProtocol
     {
         public HWSmellSensor(AsyncSocketServer asyncSocketServer, AsyncSocketUserToken asyncSocketUserToken)
@@ -17,9 +20,7 @@ namespace NetIOCP.AsyncSocketProtocol
         {
             m_socketFlag = "Smell";
         }
-
-       
-       
+  
         public override void Close()
         {
             base.Close();

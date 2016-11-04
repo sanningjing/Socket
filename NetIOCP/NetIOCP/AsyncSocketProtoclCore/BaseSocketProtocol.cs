@@ -8,6 +8,9 @@ using NetIOCP.AsyncSocketPublic;
 
 namespace NetIOCP.AsyncSocketProtoclCore
 {
+    /// <summary>
+    /// 登录控制类
+    /// </summary>
     public class BaseSocketProtocol:AsyncSocketInvokeElement
     {
         protected string m_userName;

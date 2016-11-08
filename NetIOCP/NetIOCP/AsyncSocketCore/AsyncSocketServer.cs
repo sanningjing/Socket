@@ -207,7 +207,7 @@ namespace NetIOCP.AsyncSocketCore
 
         private void ProcessReceive(SocketAsyncEventArgs receiveEventArgs)
         {
-            Console.WriteLine("begin ProcessReceive ");
+     //       Console.WriteLine("begin ProcessReceive ");
 
             AsyncSocketUserToken userToken = receiveEventArgs.UserToken as AsyncSocketUserToken;
             if (userToken.ConnectSocket == null)
@@ -247,7 +247,7 @@ namespace NetIOCP.AsyncSocketCore
             {
                 CloseClientSocket(userToken);
             }
-            Console.WriteLine("end ProcessReceive ");
+            //Console.WriteLine("end ProcessReceive ");
         }
 
         private bool ProcessSend(SocketAsyncEventArgs sendEventArgs)

@@ -68,6 +68,7 @@
     <Compile Include="AsyncSocketProtocol\LHSoilSensor.cs" />
     <Compile Include="AsyncSocketProtocol\SendQueryCommand.cs" />
     <Compile Include="AsyncSocketPublic\BasicFunc.cs" />
+    <Compile Include="AsyncSocketPublic\DataClass.cs" />
     <Compile Include="Data\DataManager.cs" />
     <Compile Include="Data\DBOperation.cs" />
     <Compile Include="Program.cs" />

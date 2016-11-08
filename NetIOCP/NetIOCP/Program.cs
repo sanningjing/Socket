@@ -9,6 +9,7 @@ using NetIOCP.AsyncSocketCore;
 using System.Configuration;
 using log4net;
 using log4net.Repository.Hierarchy;
+using NetIOCP.Data;
 
 namespace NetIOCP
 {
@@ -17,6 +18,7 @@ namespace NetIOCP
         public static ILog Logger;
 
         public static AsyncSocketServer AsyncSocketSvr;
+        public static DataManager dm;
         public static string FileDirectory;
         static void Main(string[] args)
         {
@@ -35,13 +37,16 @@ namespace NetIOCP
             //todo:性能测试
             int port = 0;
           //  if (!(int.TryParse(config.AppSettings.Settings["Port"].Value, out port)))
-                port = 8103;
+                port = 8105;
             int parallelNum = 100;
           //  if (!(int.TryParse(config.AppSettings.Settings["ParallelNum"].Value, out parallelNum)))
                 parallelNum = 100;//并发数量
             int socketTimeOutMS = 0;
             //if (!(int.TryParse(config.AppSettings.Settings["SocketTimeOutMS"].Value, out socketTimeOutMS)))
                 socketTimeOutMS = 5 * 60 * 1000;
+
+            dm = new DataManager();
+
 
              AsyncSocketSvr = new AsyncSocketServer(parallelNum);
              AsyncSocketSvr.SocketTimeOutMS = socketTimeOutMS;

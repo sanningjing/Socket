@@ -111,7 +111,7 @@ namespace NetIOCP.AsyncSocketCore
         {
             m_activeDT = DateTime.UtcNow;
             m_asyncSocketUserToken.SendAsyncState = false;
-            Console.WriteLine("public virtual bool SendCompleted(): m_asyncSocketUserToken.SendAsyncState = false;");
+           // Console.WriteLine("public virtual bool SendCompleted(): m_asyncSocketUserToken.SendAsyncState = false;");
             AsyncSendBufferManager asyncSendBufferManager = m_asyncSocketUserToken.SendBuffer;
             asyncSendBufferManager.ClearFirstPacket(); //清除已发送的包
             int offset = 0;

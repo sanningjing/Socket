@@ -7,6 +7,8 @@ using NetIOCP.AsyncSocketCore;
 using NetIOCP.AsyncSocketProtoclCore;
 using log4net;
 using log4net.Repository.Hierarchy;
+using NetIOCP.AsyncSocketPublic;
+using NetIOCP.Data;
 
 namespace NetIOCP.AsyncSocketProtocol
 {
@@ -20,7 +22,14 @@ namespace NetIOCP.AsyncSocketProtocol
         {
             m_socketFlag = "Smell";
         }
-  
+
+        ///just for test
+        private int count = 0;
+
+
+        /// <summary>
+        ///
+        /// </summary>
         public override void Close()
         {
             base.Close();
@@ -160,7 +169,7 @@ namespace NetIOCP.AsyncSocketProtocol
             {
                 //心跳包处理
                 rReturn=HeartBeatAnalyse(buffer);
-                Console.WriteLine("心跳包输出.");
+                Console.WriteLine("心跳包.");
             }
             else if (count==42)
             {
@@ -222,6 +231,11 @@ namespace NetIOCP.AsyncSocketProtocol
                 string strValue = System.Text.Encoding.ASCII.GetString(bValue);
                 double dValue = GetRealValue(Convert.ToDouble(strValue),byte2HexStr(bPoint,1));
                 string strUnit = GetStrUnit(byte2HexStr(bUnit,3));
+
+                //
+                DataClassHW dchw = new DataClassHW();
+                dchw.dNH3Value = dValue;
+                DataManager.listHW.AddLast(dchw);
 
                 //输出结果
                 string strResult= System.DateTime.Now.ToString() + "气体浓度为：" + dValue.ToString() + strUnit+ System.Environment.NewLine;

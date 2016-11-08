@@ -74,7 +74,7 @@ namespace NetIOCP.AsyncSocketCore
 
         public void WriteBuffer(byte[] buffer, int offset, int count)
         {
-            Console.WriteLine("存数据到缓冲区");
+     //       Console.WriteLine("存数据到缓冲区");
             Int32 reserveCount = Buffer.Length - DataCount;
             if (reserveCount >= count) //可用空间够用
             {
@@ -84,7 +84,7 @@ namespace NetIOCP.AsyncSocketCore
                     DataEnd += count;
                     DataCount += count;
 
-                    Console.WriteLine(System.DateTime.Now.ToString()+"WriteBuffer:"+count.ToString()+"  Total:"+DataCount.ToString());
+              //      Console.WriteLine(System.DateTime.Now.ToString()+"WriteBuffer:"+count.ToString()+"  Total:"+DataCount.ToString());
                 }
                 else //the end of ring buffer is not enough for new data
                 {

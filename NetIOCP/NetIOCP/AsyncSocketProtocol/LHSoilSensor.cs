@@ -5,6 +5,8 @@ using System.Text;
 using System.Threading.Tasks;
 using NetIOCP.AsyncSocketCore;
 using NetIOCP.AsyncSocketProtoclCore;
+using NetIOCP.AsyncSocketPublic;
+using NetIOCP.Data;
 
 namespace NetIOCP.AsyncSocketProtocol
 {
@@ -18,6 +20,12 @@ namespace NetIOCP.AsyncSocketProtocol
         {
             m_socketFlag = "SOIL";
         }
+
+        ///just for test
+        private int count = 0;
+
+
+
 
         /// <summary>
         /// 接收到的数据进行处理:该传感器没有帧头帧尾，一帧一处理。
@@ -103,8 +111,23 @@ namespace NetIOCP.AsyncSocketProtocol
             double lData7 = ((buffer[16] << 8) | buffer[17]) * 0.1;//SOIL_MOISTURE//20cm
             double lData8 = ((buffer[18] << 8) | buffer[19]) * 0.1;//SOIL_MOISTURE30
 
-            string strOut = "CO2:" + lData1 + " 环境温度：" + lData2 + " 环境湿度：" + lData3 + " 光照：" + lData4 + " 土壤PH：" + lData5 + " 土壤温度：" + lData6 + " 土壤湿度：" + lData7 + " 土壤湿度30：" + lData8;
-            Console.WriteLine(strOut);
+            DataClassLH dclh = new DataClassLH();
+            dclh.ID = bId;
+            dclh.dAirTemperature = lData2;
+            dclh.dAirMoisture = lData3;
+            dclh.dSunshine = lData4;
+            dclh.dSoilPH = lData5;
+            dclh.dSoilTempture = lData6;
+            dclh.dSoilMoisture = lData7;
+            dclh.dSoilMoisture30 = lData8;
+
+            DataManager.listLH.AddFirst(dclh);///新进来的放在第一条，与取出的方向不一样
+
+            count++;
+//
+         //   string strOut = "CO2:" + lData1 + " 环境温度：" + lData2 + " 环境湿度：" + lData3 + " 光照：" + lData4 + " 土壤PH：" + lData5 + " 土壤温度：" + lData6 + " 土壤湿度：" + lData7 + " 土壤湿度30：" + lData8;
+
+          //  Console.WriteLine(count + " " +strOut);
 
             //Convert.ToDouble();
 

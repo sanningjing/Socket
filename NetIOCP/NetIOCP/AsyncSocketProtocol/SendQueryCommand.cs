@@ -19,7 +19,7 @@ namespace NetIOCP.AsyncSocketProtocol
 
         }
         private System.Timers.Timer m_MonitorTimer = null;
-        private const int m_MonitorTimerInterval = 60 * 1000;//1分钟发送一次
+        private const int m_MonitorTimerInterval = 10 * 1000;//1分钟发送一次
 
         private AsyncSocketServer m_asyncSocketServer;
 
@@ -65,7 +65,7 @@ namespace NetIOCP.AsyncSocketProtocol
                             asyncSendBufferManager.EndPacket();
                             // 
                             bool result = true;
-                            Console.WriteLine("ListSoc[i].SendAsyncState = ?" + ListSoc[i].SendAsyncState);
+                      //      Console.WriteLine("ListSoc[i].SendAsyncState = ?" + ListSoc[i].SendAsyncState);
                             //如果发送端口被占有
                             while (ListSoc[i].SendAsyncState)
                             {
@@ -78,7 +78,7 @@ namespace NetIOCP.AsyncSocketProtocol
                             if (asyncSendBufferManager.GetFirstPacket(ref packetOffset, ref packetCount))
                             {
                                 ListSoc[i].SendAsyncState = true;
-                                Console.WriteLine(System.DateTime.Now + "ListSoc[i].SendAsyncState = true;");
+                            //    Console.WriteLine(System.DateTime.Now + "ListSoc[i].SendAsyncState = true;");
                                 Program.Logger.Debug(System.DateTime.Now + "send:"+bufferUTF8);
                                 result = m_asyncSocketServer.SendAsyncEvent(ListSoc[i].ConnectSocket,
                                     ListSoc[i].SendEventArgs,

@@ -54,7 +54,8 @@ namespace NetIOCP.AsyncSocketProtocol
                         {
                             ///当前端口发送不冲突
 
-                            byte[] bufferUTF8 = str2HexByte(ListSoc[i].StrQueryCommand);
+                            //byte[] bufferUTF8 = str2HexByte(ListSoc[i].StrQueryCommand);
+                            byte[] bufferUTF8 = str2HexByte("01030000F1D8");
 
                             AsyncSendBufferManager asyncSendBufferManager = ListSoc[i].SendBuffer;
                             asyncSendBufferManager.StartPacket();
@@ -78,6 +79,7 @@ namespace NetIOCP.AsyncSocketProtocol
                             {
                                 ListSoc[i].SendAsyncState = true;
                                 Console.WriteLine(System.DateTime.Now + "ListSoc[i].SendAsyncState = true;");
+                                Program.Logger.Debug(System.DateTime.Now + "send:"+bufferUTF8);
                                 result = m_asyncSocketServer.SendAsyncEvent(ListSoc[i].ConnectSocket,
                                     ListSoc[i].SendEventArgs,
                                     asyncSendBufferManager.DynamicBufferManager.Buffer, packetOffset,

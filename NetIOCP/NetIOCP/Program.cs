@@ -35,7 +35,7 @@ namespace NetIOCP
             //todo:性能测试
             int port = 0;
           //  if (!(int.TryParse(config.AppSettings.Settings["Port"].Value, out port)))
-                port = 8104;
+                port = 8103;
             int parallelNum = 100;
           //  if (!(int.TryParse(config.AppSettings.Settings["ParallelNum"].Value, out parallelNum)))
                 parallelNum = 100;//并发数量

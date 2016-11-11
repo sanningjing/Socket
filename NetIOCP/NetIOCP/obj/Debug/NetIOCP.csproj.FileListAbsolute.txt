@@ -3,6 +3,6 @@ E:\LyjGit\testGit\NetIOCP\NetIOCP\bin\Debug\NetIOCP.exe
 E:\LyjGit\testGit\NetIOCP\NetIOCP\bin\Debug\NetIOCP.pdb
 E:\LyjGit\testGit\NetIOCP\NetIOCP\bin\Debug\log4net.dll
 E:\LyjGit\testGit\NetIOCP\NetIOCP\bin\Debug\log4net.xml
-E:\LyjGit\testGit\NetIOCP\NetIOCP\obj\Debug\NetIOCP.csprojResolveAssemblyReference.cache
 E:\LyjGit\testGit\NetIOCP\NetIOCP\obj\Debug\NetIOCP.exe
 E:\LyjGit\testGit\NetIOCP\NetIOCP\obj\Debug\NetIOCP.pdb
+E:\LyjGit\testGit\NetIOCP\NetIOCP\bin\Debug\App.config

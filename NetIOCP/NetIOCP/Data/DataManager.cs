@@ -31,7 +31,7 @@ namespace NetIOCP.Data
         }
 
         /// <summary>
-        /// 将数据存入数据库
+        /// HW：环卫气体：将数据存入数据库
         /// </summary>
         private void DataProcessListHW()
         {
@@ -85,8 +85,11 @@ namespace NetIOCP.Data
                 if (db != null)
                 {
                     count++;
+                    if (count > 20000)
+                    {
+                        count = 0;
+                    }
                     db.updateSoilData(dclh.ID, dct);
-                    //Program.Logger.Info("insert to soil database ok!!");
                     Console.WriteLine(System.DateTime.Now+ ":insert to soil database ok!!:"+count);
                 }
                 else

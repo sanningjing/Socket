@@ -67,16 +67,16 @@ namespace NetIOCP.AsyncSocketProtocol
                     byte[] bCheckResult = new byte[2];
                     Array.Copy(receiveBuffer.Buffer,0,forCheck,0,36);
                     bCheckResult = CheckSumCRC(forCheck);
-                    //校验OK
-                    if ((bCheckResult[0] == receiveBuffer.Buffer[37]) && (bCheckResult[1] == receiveBuffer.Buffer[36]))
-                    {
+                    //校验OK:
+                     if ((bCheckResult[0] == receiveBuffer.Buffer[37]) && (bCheckResult[1] == receiveBuffer.Buffer[36]))
+                     {
                         bool paseResult = ProcessPacket(receiveBuffer.Buffer, 0, packetLength);
                     }
                     else
                     {
                         Program.Logger.Debug("数据帧尾有问题，抛弃一帧");
                         Console.WriteLine(System.DateTime.Now+"数据帧尾有问题，抛弃一帧");
-                    }
+                   }
 
 
                 }

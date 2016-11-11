@@ -11,6 +11,8 @@ using log4net;
 using log4net.Repository.Hierarchy;
 using NetIOCP.Data;
 
+[assembly: log4net.Config.XmlConfigurator(ConfigFile = "App.config", Watch = true)]
+
 namespace NetIOCP
 {
     class Program
@@ -27,44 +29,51 @@ namespace NetIOCP
             log4net.GlobalContext.Properties["LogFileName"] = "_SocketAsyncServer" + currentTime.ToString("yyyyMMdd");
             Logger = log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
 
-            //todo:读配置文件得出的。
-             //  Configuration config = ConfigurationManager.OpenExeConfiguration(ConfigurationUserLevel.None);
-            //   FileDirectory = config.AppSettings.Settings["FileDirectory"].Value;
-            //             if (FileDirectory == "")
-            //                 FileDirectory = Path.Combine(Directory.GetCurrentDirectory(), "Files");
-            //             if (!Directory.Exists(FileDirectory))
-            //                 Directory.CreateDirectory(FileDirectory);
             //todo:性能测试
             int port = 0;
-          //  if (!(int.TryParse(config.AppSettings.Settings["Port"].Value, out port)))
-                port = 8105;
+            port = 8103;
             int parallelNum = 100;
-          //  if (!(int.TryParse(config.AppSettings.Settings["ParallelNum"].Value, out parallelNum)))
-                parallelNum = 100;//并发数量
+            parallelNum = 100;//并发数量
             int socketTimeOutMS = 0;
-            //if (!(int.TryParse(config.AppSettings.Settings["SocketTimeOutMS"].Value, out socketTimeOutMS)))
-                socketTimeOutMS = 5 * 60 * 1000;
+            socketTimeOutMS = 5 * 60 * 1000;
+
+            Logger.Debug("for test");
+            Logger.Info("for test info");
+            Logger.Error("for test error");
 
             dm = new DataManager();
-
-
-             AsyncSocketSvr = new AsyncSocketServer(parallelNum);
-             AsyncSocketSvr.SocketTimeOutMS = socketTimeOutMS;
-             AsyncSocketSvr.Init();
-             IPEndPoint listenPoint = new IPEndPoint(IPAddress.Parse("192.168.10.110"), port);
-             AsyncSocketSvr.Start(listenPoint);
+            
+            AsyncSocketSvr = new AsyncSocketServer(parallelNum);
+            AsyncSocketSvr.SocketTimeOutMS = socketTimeOutMS;
+            AsyncSocketSvr.Init();
+            IPEndPoint listenPoint = new IPEndPoint(GetIPAddress(), port);
+            AsyncSocketSvr.Start(listenPoint);
 
             Console.WriteLine("Press any key to terminate the server process....");
-     
+
 
             //for ring buffer test--begin--OK
-
-    　 //    SMELLsocketTest sst = new SMELLsocketTest();
+            ///正式环境中，把SMELLsocketTest.cs/RingBufferManager.cs删除
+            //    SMELLsocketTest sst = new SMELLsocketTest();
             //for ring buffer test--end--OK
 
             Console.ReadKey();
 
+        }
 
+        public static IPAddress GetIPAddress()
+        {
+            IPAddress m_listenIP = null;
+            IPAddress[] AddressList = Dns.GetHostByName(Dns.GetHostName()).AddressList;
+            if (AddressList.Length == 1)
+            {
+                m_listenIP = AddressList[0];
+            }
+            else if (AddressList.Length > 1)//目前此项只针对吴中水利项目，10.38.10.24为云主机，具备双网卡，我们使用第二块网卡
+            {
+                m_listenIP = AddressList[1];
+            }
+            return m_listenIP;
         }
     }
 }
